@@ -157,11 +157,14 @@ bar {
         tray_output primary
 }
 
+# Multi-monitor
+workspace 2 output VGA-1-1
+xrandr --output VGA-1-1 --auto --right-of eDP-1-1
+
+
+# Startup Applications 
 exec feh --bg-scale /home/dev/.config/i3/simplicity-wallpapers.jpeg
-
 exec --no-startup-id firefox &
-
-
 exec --no-startup-id /usr/bin/gnome-settings-daemon
 exec --no-startup-id nm-applet
 exec --no-startup-id blueman-applet
