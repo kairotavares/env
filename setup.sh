@@ -34,21 +34,30 @@ sudo -E apt install -y vim \
 
 install_docker() {
 
+# Install docker-ce
 sudo -E apt-get update
-sudo -E apt-get install -y apt-transport-https ca-certificates curl
-sudo -E apt-key adv --keyserver-options http-proxy=$HTTP_PROXY --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
-echo "deb https://apt.dockerproject.org/repo ubuntu-trusty main" | sudo tee -a /etc/apt/sources.list.d/docker.list
 
-# Install docker
+sudo -E apt-get install -y \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    software-properties-common
+
+curl --proxy $http_proxy -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+sudo -E add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+
 sudo -E apt-get update
-sudo -E apt-get install -y docker-engine
+sudo -E apt-get install -y docker-ce
 
-# Add user to group docker
 sudo groupadd docker
 sudo usermod -aG docker $USER
 
 # Install docker compose
-curl --proxy $HTTP_PROXY -L "https://github.com/docker/compose/releases/download/1.8.1/docker-compose-$(uname -s)-$(uname -m)" | sudo tee /usr/local/bin/docker-compose > /dev/null
+curl --proxy $http_proxy -L "https://github.com/docker/compose/releases/download/1.8.1/docker-compose-$(uname -s)-$(uname -m)" | sudo tee /usr/local/bin/docker-compose > /dev/null
 sudo chmod +x /usr/local/bin/docker-compose
 sudo service docker restart
 }
@@ -72,6 +81,6 @@ sudo -E apt-get update
 sudo -E apt-get install arc-theme
 }
 
-#install_dependencies
+install_dependencies
 install_docker
 install_golang
