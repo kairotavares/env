@@ -1,7 +1,8 @@
 #!/bin/bash
 
-sudo apt update
-sudo apt install -y vim \
+install_dependencies() {
+sudo -E apt update
+sudo -E apt install -y vim \
                     htop \
                     linux-firmware \
                     intel-microcode \
@@ -28,17 +29,19 @@ sudo apt install -y vim \
                     tmux \
                     nvidia-367 \
                     openjdk-8-jdk
+}
+
 
 install_docker() {
 
-sudo apt-get update
-sudo apt-get install -y apt-transport-https ca-certificates curl
-sudo apt-key adv --keyserver-options http-proxy=$HTTP_PROXY --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+sudo -E apt-get update
+sudo -E apt-get install -y apt-transport-https ca-certificates curl
+sudo -E apt-key adv --keyserver-options http-proxy=$HTTP_PROXY --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
 echo "deb https://apt.dockerproject.org/repo ubuntu-trusty main" | sudo tee -a /etc/apt/sources.list.d/docker.list
 
 # Install docker
-sudo apt-get update
-sudo apt-get install -y docker-engine
+sudo -E apt-get update
+sudo -E apt-get install -y docker-engine
 
 # Add user to group docker
 sudo groupadd docker
@@ -64,10 +67,11 @@ echo "export PATH=$GOROOT/bin:$PATH" >> ~/.bashrc
 }
 
 install_dark_theme() {
-sudo add-apt-repository ppa:noobslab/themes
-sudo apt-get update
-sudo apt-get install arc-theme
+sudo -E add-apt-repository ppa:noobslab/themes
+sudo -E apt-get update
+sudo -E apt-get install arc-theme
 }
 
-#install_docker
-#install_golang
+#install_dependencies
+install_docker
+install_golang
